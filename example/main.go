@@ -3,7 +3,7 @@ package main
 import (
 	"db-beta/db"
 	"log"
-	"time"
+	//"time"
 
 	"github.com/google/uuid"
 )
@@ -22,26 +22,23 @@ func main() {
 	db.AddToCache(userKey, newUser)
 	log.Println("Added user:", newUser)
 
-	userIdToDelete := "1205f43c-a04a-42fe-890e-83399c587e69" // Important: Replace this with an UserId from db.json to test
+	userIdToDelete := "ee3bebf0-421d-4a9f-9a01-fd12ccb8805f" // Important: Replace this with an UserId from db.json to test
 	user := db.SearchCache(userKey, "UserId", userIdToDelete)
-    //log.Println("User:", user[0]["UserId"])
 
 	if user != nil {
 		log.Println("User found:", user)
-		log.Println("Deleting user with ID:", userIdToDelete)
+		log.Println("User Id:", user["UserId"])
 		db.DeleteFromCache(userKey, "UserId", userIdToDelete)
 	} else {
-		log.Println("User with ID", userIdToDelete, "does not exist.")
+		log.Println("User with Id", userIdToDelete, "does not exist.")
 	}
-
-    time.Sleep(10 * time.Minute)
 }
 
 func CreateUser(userId, username, password, email string) map[string]interface{} {
 	return map[string]interface{}{
-			"UserId":   userId,
-			"Username": username,
-			"Email":    email,
-			"Password": password,
+		"UserId":   userId,
+		"Username": username,
+		"Email":    email,
+		"Password": password,
 	}
 }
