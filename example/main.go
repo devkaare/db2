@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var userKey = "User"
+var userKey = "Users"
 
 func main() {
 	db.LoadCache()       // Loading the users.json files contents into memory and creating a users.json file if none exists
