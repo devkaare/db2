@@ -40,7 +40,6 @@ func LoadCache() {
 	}
 
 	// Start a goroutine to save the cache every 5 minutes
-
     go func() {
         ticker := time.NewTicker(5 * time.Minute)
         defer ticker.Stop()
