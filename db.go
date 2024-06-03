@@ -5,7 +5,7 @@ import (
 	"errors"
 	"log"
 	"os"
-    "time"
+   	"time"
 )
 
 var dbFile = "db.json"
@@ -62,42 +62,56 @@ func SaveCache() {
 }
 
 func AddToCache(key string, value map[string]interface{}) {
-	dbFileCache = append(dbFileCache, map[string]interface{}{key: value})
+    for i, allData := range dbFileCache {
+        if _, ok := allData[key]; ok {
+            dbFileCache[i][key] = append(dbFileCache[i][key].([]interface{}), value)
+            return
+        }
+    }
+
+    // If no existing key is found, create a new one
+    dbFileCache = append(dbFileCache, map[string]interface{}{key: []interface{}{value}})
 }
 
-func SearchCache[T any](key string, field string, search T) []map[string]interface{} {
+func SearchCache[T any](key string, field string, search T) map[string]interface{} {
 	var foundData []map[string]interface{}
 	for _, allData := range dbFileCache {
-		if data, ok := allData[key].(map[string]interface{}); ok {
-			switch v := any(search).(type) {
-			case int:
-				if data[field] == v {
-					foundData = append(foundData, data)
-					break
-				}
-			case string:
-				if data[field] == v {
-					foundData = append(foundData, data)
-					break
+		if data, ok := allData[key].([]interface{}); ok {
+			for _, item := range data {
+				if itemMap, ok := item.(map[string]interface{}); ok {
+					switch v := any(search).(type) {
+					case int:
+						if itemMap[field] == v {
+							foundData = append(foundData, itemMap)
+						}
+					case string:
+						if itemMap[field] == v {
+							foundData = append(foundData, itemMap)
+						}
+					}
 				}
 			}
 		}
 	}
-	return foundData
+    if len(foundData) == 0 {
+        return nil
+    }
+	return foundData[0]
 }
 
 func DeleteFromCache[T any](key string, field string, search T) {
-	var searchIndex int
 	for i, allData := range dbFileCache {
-		if data, ok := allData[key].(map[string]interface{}); ok {
-			if data[field] == any(search) {
-				searchIndex = i
-				break
+		if data, ok := allData[key].([]interface{}); ok {
+			for j, item := range data {
+				if itemMap, ok := item.(map[string]interface{}); ok {
+					if itemMap[field] == any(search) {
+						data = append(data[:j], data[j+1:]...)
+						allData[key] = data
+						dbFileCache[i] = allData
+						return
+					}
+				}
 			}
 		}
-	}
-
-	if searchIndex > 0 {
-		dbFileCache = append(dbFileCache[:searchIndex], dbFileCache[searchIndex+1:]...)
 	}
 }
