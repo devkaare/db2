@@ -5,10 +5,9 @@ import (
 	"errors"
 	"log"
 	"os"
-   	"time"
-)
+    "time")
 
-var dbFile = "db.json"
+var dbFile string
 var dbFileCache []map[string]interface{}
 
 // This function is not intended to be used outside this file, hence not included in docs
@@ -23,7 +22,8 @@ func DoesFileExist(path string) (bool, error) {
 	return true, err
 }
 
-func LoadCache() {
+func LoadCache(dbFilePath string) {
+    dbFile = dbFilePath // Set the global dbFile variable to the provided path
 	result, _ := DoesFileExist(dbFile)
 	if !result {
 		os.Create(dbFile)
