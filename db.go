@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"os"
+    "time"
 )
 
 var dbFile = "db.json"
@@ -37,6 +38,17 @@ func LoadCache() {
 	if err := json.Unmarshal(data, &dbFileCache); err != nil {
 		log.Fatal(err)
 	}
+
+	// Start a goroutine to save the cache every 5 minutes
+
+    go func() {
+        ticker := time.NewTicker(5 * time.Minute)
+        defer ticker.Stop()
+
+        for range ticker.C {
+            SaveCache()
+        }
+    }()
 }
 
 func SaveCache() {
@@ -51,7 +63,7 @@ func SaveCache() {
 }
 
 func AddToCache(key string, value map[string]interface{}) {
-    dbFileCache = append(dbFileCache, map[string]interface{}{key: value})
+	dbFileCache = append(dbFileCache, map[string]interface{}{key: value})
 }
 
 func SearchCache[T any](key string, field string, search T) []map[string]interface{} {
@@ -79,10 +91,10 @@ func DeleteFromCache[T any](key string, field string, search T) {
 	var searchIndex int
 	for i, allData := range dbFileCache {
 		if data, ok := allData[key].(map[string]interface{}); ok {
-            if data[field] == any(search) {
-                searchIndex = i
-                break
-            }
+			if data[field] == any(search) {
+				searchIndex = i
+				break
+			}
 		}
 	}
 
