@@ -8,9 +8,9 @@
 <div>
   <p>
     <strong>Important:</strong><br />
-    Call <code>LoadCache(dbFilePath string)</code> at the start of your main
+    Call <code>LoadCache(path string)</code> at the start of your main
     function to initialize the cache with the JSON file located at
-    <code>dbFilePath</code>, and <code>defer SaveCache()</code> to save changes
+    <code>path</code>, and <code>defer SaveCache()</code> to save changes
     when the program exits. Additionally, a background process automatically
     saves the cache every 5 minutes.
   </p>
@@ -18,7 +18,7 @@
 <div>
   <h3>Functions:</h3>
   <p>
-    <strong>1. LoadCache(dbFilePath string):</strong><br />
+    <strong>1. LoadCache(path string):</strong><br />
     Loads the cache from the specified JSON file. Call this at the start of your
     main function.
   </p>
