@@ -22,8 +22,8 @@ func DoesFileExist(path string) (bool, error) {
 	return true, err
 }
 
-func LoadCache(dbFilePath string) {
-    dbFile = dbFilePath // Set the global dbFile variable to the provided path
+func LoadCache(path string) {
+    dbFile = path // Set the global dbFile variable to the provided path
 	result, _ := DoesFileExist(dbFile)
 	if !result {
 		os.Create(dbFile)
