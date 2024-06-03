@@ -47,3 +47,7 @@
     Deletes an item from the cache based on the specified key and field.
   </p>
 </div>
+<div>
+  <h3>Example Usage:</h3>
+  <p>View <code>example/main.go</code> for more details.</p>
+</div>
