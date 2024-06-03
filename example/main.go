@@ -1,7 +1,7 @@
 package main
 
 import (
-	"db-beta/db"
+	"github.com/devkaare/db2"
 	"log"
 	//"time"
 
