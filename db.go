@@ -50,8 +50,8 @@ func SaveCache() {
 	}
 }
 
-func AddToCache(data map[string]interface{}) {
-	dbFileCache = append(dbFileCache, data)
+func AddToCache(key string, value map[string]interface{}) {
+    dbFileCache = append(dbFileCache, map[string]interface{}{key: value})
 }
 
 func SearchCache[T any](key string, field string, search T) []map[string]interface{} {
