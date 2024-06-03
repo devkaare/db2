@@ -11,12 +11,12 @@ import (
 var userKey = "Users"
 
 func main() {
-	db.LoadCache()       // Loading the users.json files contents into memory and creating a users.json file if none exists
+	db.LoadCache("users.json") // Loading the users.json files contents into memory and creating a users.json file if none exists
 	defer db.SaveCache() // Ensuring that the program saves the user cache to the json file on shutdown
 	// Important: The two functions above are CRUCIAL for this package to function!
 
 	userId := uuid.New().String()
-	newUser := CreateUser(userId, "emma_davis2", "password2", "emma@example.com2")
+	newUser := CreateUser(userId, "Emma A. Davis", "password2", "emma@example.com2")
 
 	// Inserting a new user
 	db.AddToCache(userKey, newUser)
