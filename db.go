@@ -5,7 +5,8 @@ import (
 	"errors"
 	"log"
 	"os"
-    "time")
+	"time"
+)
 
 var dbFile string
 var dbFileCache []map[string]interface{}
@@ -23,7 +24,7 @@ func DoesFileExist(path string) (bool, error) {
 }
 
 func LoadCache(path string) {
-    dbFile = path // Set the global dbFile variable to the provided path
+	dbFile = path // Set the global dbFile variable to the provided path
 	result, _ := DoesFileExist(dbFile)
 	if !result {
 		os.Create(dbFile)
@@ -40,14 +41,14 @@ func LoadCache(path string) {
 	}
 
 	// Start a goroutine to save the cache every 5 minutes
-    go func() {
-        ticker := time.NewTicker(5 * time.Minute)
-        defer ticker.Stop()
+	go func() {
+		ticker := time.NewTicker(5 * time.Minute)
+		defer ticker.Stop()
 
-        for range ticker.C {
-            SaveCache()
-        }
-    }()
+		for range ticker.C {
+			SaveCache()
+		}
+	}()
 }
 
 func SaveCache() {
@@ -62,15 +63,15 @@ func SaveCache() {
 }
 
 func AddToCache(key string, value map[string]interface{}) {
-    for i, allData := range dbFileCache {
-        if _, ok := allData[key]; ok {
-            dbFileCache[i][key] = append(dbFileCache[i][key].([]interface{}), value)
-            return
-        }
-    }
+	for i, allData := range dbFileCache {
+		if _, ok := allData[key]; ok {
+			dbFileCache[i][key] = append(dbFileCache[i][key].([]interface{}), value)
+			return
+		}
+	}
 
-    // If no existing key is found, create a new one
-    dbFileCache = append(dbFileCache, map[string]interface{}{key: []interface{}{value}})
+	// If no existing key is found, create a new one
+	dbFileCache = append(dbFileCache, map[string]interface{}{key: []interface{}{value}})
 }
 
 func SearchCache[T any](key string, field string, search T) map[string]interface{} {
@@ -93,10 +94,18 @@ func SearchCache[T any](key string, field string, search T) map[string]interface
 			}
 		}
 	}
-    if len(foundData) == 0 {
-        return nil
-    }
+	if len(foundData) == 0 {
+		return nil
+	}
 	return foundData[0]
+}
+
+func GetCache(key string) []interface{} {
+	for _, data := range dbFileCache {
+		users := data[key].([]interface{})
+		return users
+	}
+	return nil
 }
 
 func DeleteFromCache[T any](key string, field string, search T) {
