@@ -11,8 +11,7 @@
     Call <code>LoadCache(path string)</code> at the start of your main
     function to initialize the cache with the JSON file located at
     <code>path</code>, and <code>defer SaveCache()</code> to save changes
-    when the program exits. Additionally, a background process automatically
-    saves the cache every 5 minutes.
+    when the program exits. You can simply call <code>SaveCache()</code> after any <code>AddToCache()</code> statment if preferred over saving cache on shutdown.
   </p>
 </div>
 <div>
