@@ -5,7 +5,6 @@ import (
 	"errors"
 	"log"
 	"os"
-	"time"
 )
 
 var dbFile string
@@ -39,16 +38,6 @@ func LoadCache(path string) {
 	if err := json.Unmarshal(data, &dbFileCache); err != nil {
 		log.Fatal(err)
 	}
-
-	// Start a goroutine to save the cache every 5 minutes
-	go func() {
-		ticker := time.NewTicker(5 * time.Minute)
-		defer ticker.Stop()
-
-		for range ticker.C {
-			SaveCache()
-		}
-	}()
 }
 
 func SaveCache() {
