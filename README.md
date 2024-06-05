@@ -46,6 +46,12 @@
     ><br />
     Deletes an item from the cache based on the specified key and field.
   </p>
+    <strong
+      >6. GetCache(key string) []interface{}:</strong
+    ><br />
+    Returns the full cache for the specified key.
+  </p>
+  
 </div>
 <div>
   <h3>Example Usage:</h3>
