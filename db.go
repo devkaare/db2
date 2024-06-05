@@ -102,8 +102,8 @@ func SearchCache[T any](key string, field string, search T) map[string]interface
 
 func GetCache(key string) []interface{} {
 	for _, data := range dbFileCache {
-		users := data[key].([]interface{})
-		return users
+		keyValues := data[key].([]interface{})
+		return keyValues
 	}
 	return nil
 }
